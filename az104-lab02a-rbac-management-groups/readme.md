@@ -1,68 +1,10 @@
-
-ok i followed this lab. https://github.com/MicrosoftLearning/AZ-104-MicrosoftAzureAdministrator/blob/master/Instructions/Labs/LAB_02a_Manage_Subscriptions_and_RBAC_Entra.md
-
-6:08 PM
-
-Searched the web
-Searched the web
-It looks like GitHub's rendering blocked the lab content for me. It seems like you've completed AZ-104 Lab 02a – Manage Subscriptions and RBAC (Entra ID). How can I help you with it? For example:
-
-Did something not work as expected?
-Want me to explain a concept from the lab (RBAC roles, management groups, custom roles, etc.)?
-Looking to test your knowledge with some practice questions?
-Want a summary/notes document of what the lab covered?
-Let me know what you need!
-
-
-PS /home/test> New-AzResourceGroup -Name 'Test123' -Location 'Central US' New-AzResourceGroup: The client 'testuser1@vanshbhardwaj.com' with object id 'd80798cf-6657-41c3-8126-0e45226de505' does not have authorization to perform action 'Microsoft.Resources/subscriptions/resourcegroups/
-
-pasted
-
-and this is what I did. can u create me a beautiful read me about what I did on this lab including a table of contents. I want it in .md format
-
-6:10 PM
-
-Viewed a file, created a file, read a file
-Viewed a file, created a file, read a file
-Here's your README! It includes:
-
-Full table of contents with anchor links to every section
-Formatted tables for environment details, role permissions, and test results
-All your PowerShell commands in proper code blocks with the actual error output you got
-A visual hierarchy diagram showing how management groups flow down to resources
-A final summary flowchart showing the full lab workflow
-Clean badges and icons throughout to make it easy to scan
-It's structured so it reads great both on GitHub and as standalone documentation.
-
-Az104 lab02a readme
-Document · MD 
-one small thing, take away any emojis. This has to be emant for employer to see and wanna hire me. going on my portfolio
-
-6:11 PM
-
-Created 2 files, viewed a file, ran a command
-Created 2 files, viewed a file, ran a command
-All emojis removed — clean, professional, and portfolio-ready. Good luck with the job hunt!
-
-Az104 lab02a readme
-Document · MD 
-so on my github portfolio repo im making a link called "azure labs" meant for smaller labs like that repo ima have a main read me and have smaller folders with readmes explaining each one. What should i name the folder holding this readme.
-
-6:15 PM
-Something like az104-lab02a-rbac-management-groups would work well — it's descriptive, lowercase with hyphens (standard GitHub convention), and tells an employer exactly what's inside without even clicking.
-
-
-
-
-
-Claude is AI and can make mistakes. Please double-check responses.
-Az104 lab02a readme · MD
-Copy
-
 # AZ-104 Lab 02a — Manage Subscriptions and RBAC with Microsoft Entra ID
 
 > **Azure Administrator Certification Lab Documentation**  
 > Demonstrating secure cloud governance through Role-Based Access Control (RBAC), Management Groups, and permission validation.
+
+***Link to Lab Instructions:*** [Github Repo](https://github.com/MicrosoftLearning/AZ-104-MicrosoftAzureAdministrator/blob/master/Instructions/Labs/LAB_02a_Manage_Subscriptions_and_RBAC_Entra.md
+)
 
 ---
 
