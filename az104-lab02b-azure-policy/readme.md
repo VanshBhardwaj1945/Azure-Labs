@@ -1,7 +1,8 @@
 # AZ-104 Lab 02b — Manage Governance via Azure Policy
 
 > **Azure Administrator Certification Lab Documentation**  
-> Demonstrating Azure governance enforcement through Policy assignments, tag inheritance, and resource locks — executed entirely via Azure Cloud Shell and PowerShell.
+> Demonstrating Azure governance enforcement through Policy assignments, tag inheritance, and resource locks — executed entirely via Azure Cloud Shell and PowerShell.  
+> ***Link to Lab Instructions:*** [GitHub Repo](https://github.com/MicrosoftLearning/AZ-104-MicrosoftAzureAdministrator/blob/master/Instructions/Labs/LAB_02b-Manage_Governance_via_Azure_Policy.md)
 
 ---
 
@@ -116,7 +117,7 @@ With the policy active, a storage account creation was attempted inside the `tes
 
 The resource creation was denied at the Azure layer before provisioning began. This confirmed the policy was correctly enforced at the resource group scope.
 
-> Screenshot: Policy violation message when attempting to create a storage account without the required Cost Center tag.
+<img src="./docs/01-No-Tags-Policy-Working.png" alt="Policy enforcement blocking resource creation without required Cost Center tag" width="600"/>
 
 ---
 
@@ -156,7 +157,7 @@ A storage account was created inside the `test` resource group without explicitl
 
 **Result: Tag inherited successfully.**
 
-> Screenshot: Storage account showing the Cost Center tag automatically populated after creation.
+<img src="./docs/02-Inherited-Tags-Policy-Working.png" alt="Cost Center tag automatically inherited by storage account from parent resource group" width="600"/>
 
 ---
 
