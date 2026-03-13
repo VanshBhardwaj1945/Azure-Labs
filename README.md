@@ -15,6 +15,14 @@ Each lab folder contains a dedicated README documenting the objective, steps tak
 
 ---
 
+## Infrastructure as Code
+
+| Lab | What I Did | Concepts Covered | Technologies |
+|---|---|---|---|
+| **[AZ-104 — Manage Resources via ARM Templates](./az104-lab03b-arm-templates)** | Created a managed disk via the Portal and exported its ARM template, simplified it to a single parameter and redeployed via Custom Deployment, redeployed via Azure PowerShell and Azure CLI by editing the template in Cloud Shell each time, then rewrote the deployment as a Bicep template and deployed via CLI — five disks total, five different methods | ARM template structure, Template parameterization, Infrastructure-as-Code, Custom Deployment, Bicep vs ARM JSON, Cloud Shell editor, Multi-tool deployment fluency | Azure Portal, Azure PowerShell, Azure CLI, Azure Cloud Shell, ARM Templates, Bicep |
+
+---
+
 ## Virtual Machines & Scale Sets
 
 | Lab | What I Did | Concepts Covered | Technologies |
