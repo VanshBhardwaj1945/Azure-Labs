@@ -12,27 +12,26 @@
 2. [Environment Details](#environment-details)
 3. [Folder Structure](#folder-structure)
 4. [Step 1 — Create disk1 via Portal and Export ARM Template](#step-1--create-disk1-via-portal-and-export-arm-template)
-5. [Step 2 — Redeploy Using Custom ARM Template via Portal (disk2)](#step-2--redeploy-using-custom-arm-template-via-portal-disk2)
+5. [Step 2 — Edit Template and Redeploy via Custom Deployment (disk2)](#step-2--edit-template-and-redeploy-via-custom-deployment-disk2)
 6. [Step 3 — Deploy disk3 via Azure PowerShell](#step-3--deploy-disk3-via-azure-powershell)
 7. [Step 4 — Deploy disk4 via Azure CLI](#step-4--deploy-disk4-via-azure-cli)
 8. [Step 5 — Deploy disk5 via Bicep Template](#step-5--deploy-disk5-via-bicep-template)
-9. [Validate All Disks](#validate-all-disks)
-10. [Key Learnings](#key-learnings)
-11. [Overall Result](#overall-result)
+9. [Key Learnings](#key-learnings)
+10. [Overall Result](#overall-result)
 
 ---
 
 ## Lab Overview
 
-This lab explores **Infrastructure-as-Code (IaC)** on Azure by deploying the same managed disk resource five different ways, each using a different method or toolchain. The goal is to understand how ARM templates are structured, how parameters make them reusable, and how ARM JSON compares to Bicep as a more developer-friendly alternative.
+This lab explores **Infrastructure-as-Code (IaC)** on Azure by deploying the same type of managed disk resource five different ways, each using a different method or toolchain. The goal is to understand how ARM templates are structured, how parameters make them reusable, and how Bicep compares to ARM JSON as a more concise alternative.
 
 Tasks completed:
 
 - Created a managed disk via the Azure Portal and exported its auto-generated ARM template
-- Modified the template to make the disk name a parameter and redeployed via Custom Deployment
-- Redeployed using the same template via Azure PowerShell in Cloud Shell
-- Redeployed using Azure CLI in Cloud Shell
-- Rewrote the deployment as a Bicep template and deployed via Azure CLI
+- Simplified and edited the template, then redeployed via Portal Custom Deployment
+- Edited the template again and deployed via Azure PowerShell in Cloud Shell
+- Edited the template again and deployed via Azure CLI in Cloud Shell
+- Modified and deployed a Bicep template via Azure CLI
 
 > **Core Concepts Applied:** ARM template structure, parameterization, Infrastructure-as-Code, multi-tool deployment fluency (Portal, PowerShell, CLI, Bicep).
 
@@ -58,87 +57,98 @@ az104-lab03b-arm-templates/
 ├── README.md
 ├── templates/
 │   ├── template.json          # Original auto-exported ARM template (disk1)
-│   ├── new-template.json      # Simplified ARM template with disk_name parameter (disk2/3/4)
+│   ├── new-template.json      # Simplified ARM template with disk_name parameter
 │   └── azuredeploydisk.bicep  # Bicep template (disk5)
 └── docs/
-    ├── 01-disk1.png           # Bicep template code
-    ├── 02-disk3.png           # new-template.json modified for disk3
-    ├── 03-disk4.png           # new-template.json modified for disk4
-    └── 04-disk5.png           # Custom deployment portal showing disk2 parameter
+    ├── 01-disk1.png           # Custom Deployment portal showing disk_name parameter (disk2)
+    ├── 02-disk3.png           # Template editor with disk_name set to disk3
+    ├── 03-disk4.png           # Template editor with disk_name set to disk4
+    └── 04-disk5.png           # Bicep template in Cloud Shell editor
 ```
 
 ---
 
 ## Step 1 — Create disk1 via Portal and Export ARM Template
 
-`disk1` was created through the Azure Portal UI. After creation, the **Export Template** feature was used to capture the auto-generated ARM template that represents the disk's configuration as code.
+`disk1` was created through the Azure Portal. After deployment, the **Export Template** feature under the Automation blade was used to capture the auto-generated ARM template representing the disk's configuration as code.
 
-The exported template (`template.json`) uses a verbose parameter structure with a separate parameters file, and the disk name is exposed as a parameter `disks_disk1_name`.
+The exported template uses a verbose parameter structure with a companion parameters file. Every configurable property — disk name, location, SKU, size, encryption, network access — is exposed as a separate parameter.
 
-**Key fields from `template.json`:**
+**Key fields from the exported `template.json` parameters file:**
 
-| Field | Value |
+| Parameter | Value |
 |---|---|
-| **Disk Name Parameter** | `disks_disk1_name` (default: `disk1`) |
-| **Location** | `eastus` (hardcoded) |
-| **SKU** | `Standard_LRS` |
-| **Size** | 32 GiB |
-| **Create Option** | Empty |
-| **Encryption** | EncryptionAtRestWithPlatformKey |
+| `diskName` | `disk1` |
+| `location` | `eastus` |
+| `sku` | `Standard_LRS` |
+| `diskSizeGb` | `32` |
+| `createOption` | `empty` |
+| `diskEncryptionSetType` | `EncryptionAtRestWithPlatformKey` |
+| `networkAccessPolicy` | `AllowAll` |
+| `publicNetworkAccess` | `Enabled` |
 
-> This exported template is the starting point. The Portal generates it automatically — the next step is simplifying and parameterizing it for reuse.
+> This exported template is the raw starting point. The Portal generates it automatically — the next step is simplifying and parameterizing it for reuse.
 
 ---
 
-## Step 2 — Redeploy Using Custom ARM Template via Portal (disk2)
+## Step 2 — Edit Template and Redeploy via Custom Deployment (disk2)
 
-The exported template was simplified into `new-template.json` — removing the verbose parameters file structure and replacing it with a single clean `disk_name` parameter with a default value. This makes the template reusable for any disk name at deploy time.
+The exported template was simplified into `new-template.json`. The verbose multi-parameter structure was stripped down to a single `disk_name` parameter with a default value, with all other settings hardcoded. This makes the template clean and reusable for any disk name at deploy time.
 
-**Key change from `template.json` → `new-template.json`:**
+**Key changes from `template.json` → `new-template.json`:**
 
 | | template.json | new-template.json |
 |---|---|---|
 | **Parameter name** | `disks_disk1_name` | `disk_name` |
 | **Default value** | `disk1` | `disk2` |
 | **Schema version** | 2015-01-01 | 2019-04-01 |
+| **Parameter count** | 11 parameters | 1 parameter |
 
-The template was deployed via **Azure Portal → Custom Deployment → Edit Template**, pasting in the new JSON. The portal surfaced `disk_name` as an editable field at deploy time.
+The template was deployed via **Azure Portal → Deploy a custom template → Build your own template in the editor**. The portal surfaced `disk_name` as an editable field, confirming the parameterization worked correctly.
 
-<img src="./docs/04-disk5.png" alt="Azure Portal Custom Deployment blade showing disk_name parameter field populated with disk2" width="600"/>
+<img src="./docs/01-disk1.png" alt="Azure Portal Custom Deployment blade showing disk_name parameter field populated with disk2" width="600"/>
 
 ---
 
 ## Step 3 — Deploy disk3 via Azure PowerShell
 
-The same `new-template.json` was reused with the default value changed to `disk3`, then deployed from Azure Cloud Shell using PowerShell.
+Cloud Shell was opened in **PowerShell** mode. The `new-template.json` file was uploaded, the `disk_name` default value was changed to `disk3` in the Cloud Shell editor, and the template was deployed using `New-AzResourceGroupDeployment`.
 
-**Template modification — disk_name defaultValue set to `disk3`:**
+**Template edit — disk_name defaultValue changed to `disk3`:**
 
-<img src="./docs/02-disk3.png" alt="new-template.json modified with disk_name defaultValue set to disk3" width="600"/>
+<img src="./docs/02-disk3.png" alt="new-template.json open in Cloud Shell editor with disk_name defaultValue set to disk3" width="600"/>
 
 ```powershell
 New-AzResourceGroupDeployment -ResourceGroupName az104-rg3 -TemplateFile new-template.json
 ```
 
-**Result:** `disk3` provisioned successfully in `az104-rg3`.
+**Disks confirmed after deployment:**
+
+```
+Get-AzDisk | ft Name,ResourceGroupName,Location,DiskSizeGb,ProvisioningState
+
+Name  ResourceGroupName  Location  DiskSizeGB  ProvisioningState
+----  -----------------  --------  ----------  -----------------
+disk1 AZ104-RG3          eastus    32          Succeeded
+disk2 AZ104-RG3          eastus    32          Succeeded
+disk3 AZ104-RG3          eastus    32          Succeeded
+```
 
 ---
 
 ## Step 4 — Deploy disk4 via Azure CLI
 
-The same template was updated again to `disk4` and deployed using the Azure CLI from Cloud Shell — demonstrating the same IaC template being reused across different toolchains.
+Cloud Shell was switched to **Bash** mode. The `disk_name` default value was changed to `disk4` in the editor and deployed using the Azure CLI.
 
-**Template modification — disk_name defaultValue set to `disk4`:**
+**Template edit — disk_name defaultValue changed to `disk4`:**
 
-<img src="./docs/03-disk4.png" alt="new-template.json modified with disk_name defaultValue set to disk4" width="600"/>
+<img src="./docs/03-disk4.png" alt="new-template.json open in Cloud Shell editor with disk_name defaultValue set to disk4" width="600"/>
 
 ```bash
 az deployment group create --resource-group az104-rg3 --template-file new-template.json
 ```
 
-**Result:** `disk4` provisioned successfully in `az104-rg3`.
-
-Confirmed all four disks present:
+**Disks confirmed after deployment:**
 
 ```
 az disk list --resource-group az104-rg3 --output table
@@ -155,32 +165,17 @@ disk4   az104-rg3        eastus      Standard_LRS  32        Succeeded
 
 ## Step 5 — Deploy disk5 via Bicep Template
 
-The final disk was deployed using a **Bicep template** (`azuredeploydisk.bicep`) — Azure's domain-specific language that compiles down to ARM JSON but is significantly more readable and concise. Unlike the previous JSON templates, this one deploys a `StandardSSD_LRS` disk named `az104-disk5`.
+The `azuredeploydisk.bicep` file was uploaded to Cloud Shell. Unlike the JSON templates, Bicep uses a declarative syntax with typed parameters and decorators — significantly more readable than ARM JSON. The file was edited to set the disk name to `az104-disk5`, size to `32` GiB, and SKU to `StandardSSD_LRS`.
 
-**Bicep template — key parameters:**
+**Bicep template in the Cloud Shell editor:**
 
-<img src="./docs/01-disk1.png" alt="Bicep template code showing managed disk parameters including name, size, IOPS, throughput, and location" width="600"/>
-
-| Parameter | Value |
-|---|---|
-| **managedDiskName** | `az104-disk5` |
-| **diskSizeinGiB** | 32 (range: 4–65536) |
-| **diskIopsReadWrite** | 100 (range: 100–160000) |
-| **diskMbpsReadWrite** | 10 (range: 1–2000) |
-| **location** | Inherited from resource group |
-| **SKU** | `StandardSSD_LRS` |
+<img src="./docs/04-disk5.png" alt="azuredeploydisk.bicep open in Cloud Shell editor showing typed parameters with decorators for disk name, size, IOPS, throughput, and location" width="600"/>
 
 ```bash
 az deployment group create --resource-group az104-rg3 --template-file azuredeploydisk.bicep
 ```
 
-**Result:** `az104-disk5` provisioned as `StandardSSD_LRS`.
-
----
-
-## Validate All Disks
-
-Final state confirmed with all five disks present:
+**All five disks confirmed after deployment:**
 
 ```
 az disk list --resource-group az104-rg3 --output table
@@ -194,55 +189,43 @@ disk3        az104-rg3        eastus      Standard_LRS     32        Succeeded
 disk4        az104-rg3        eastus      Standard_LRS     32        Succeeded
 ```
 
-Also confirmed via PowerShell:
-
-```
-Get-AzDisk | ft Name,ResourceGroupName,Location,DiskSizeGb,ProvisioningState
-
-Name  ResourceGroupName  Location  DiskSizeGB  ProvisioningState
-----  -----------------  --------  ----------  -----------------
-disk1 AZ104-RG3          eastus    32          Succeeded
-disk2 AZ104-RG3          eastus    32          Succeeded
-disk3 AZ104-RG3          eastus    32          Succeeded
-```
-
 ---
 
 ## Key Learnings
 
-### 1. Exported ARM Templates Are a Great Starting Point
-The Portal's Export Template feature generates a working ARM template from any existing resource. It's verbose but accurate — a solid baseline to simplify and parameterize for reuse.
+### 1. Exported ARM Templates Are a Reliable Starting Point
+The Portal's Export Template feature generates a working ARM template from any existing resource. It is verbose by design — capturing every configurable property — but serves as an accurate baseline to simplify and parameterize.
 
 ### 2. Parameterization Is What Makes Templates Reusable
-The key improvement from `template.json` to `new-template.json` was replacing the hardcoded disk name with a `disk_name` parameter. The same file then deployed disk2, disk3, and disk4 by simply changing one default value.
+The key improvement from `template.json` to `new-template.json` was collapsing eleven parameters down to one clean `disk_name` parameter. The same file then deployed disk2, disk3, and disk4 by simply changing one default value in the editor each time.
 
-### 3. ARM JSON and Azure CLI / PowerShell Use the Same Templates
-The same `new-template.json` file deployed successfully via Portal Custom Deployment, PowerShell (`New-AzResourceGroupDeployment`), and Azure CLI (`az deployment group create`) without modification. The toolchain is interchangeable.
+### 3. The Same Template Works Across All Deployment Methods
+`new-template.json` deployed successfully via Portal Custom Deployment, PowerShell (`New-AzResourceGroupDeployment`), and Azure CLI (`az deployment group create`) without structural changes. The toolchain is interchangeable — the template format is consistent across all three.
 
 ### 4. Bicep Is More Readable Than ARM JSON
-Bicep achieves the same result as ARM JSON with significantly less boilerplate. Decorators like `@description`, `@minValue`, and `@maxValue` make parameters self-documenting. Bicep compiles to ARM JSON at deploy time — it is not a separate system.
+Bicep achieves the same result as ARM JSON with significantly less boilerplate. Decorators like `@description`, `@minValue`, and `@maxValue` make parameters self-documenting inline. Bicep compiles down to ARM JSON at deploy time — it is not a separate system, just a better authoring experience.
 
-### 5. Each Deployment Method Has Its Place
-The Portal is good for one-off deployments and exploration. PowerShell fits Windows-centric or scripted automation workflows. Azure CLI is preferred in Linux/bash environments. Bicep is the modern standard for maintainable IaC at scale.
+### 5. Each Deployment Method Has a Natural Use Case
+The Portal is best for one-off deployments and exploration. PowerShell fits scripted automation in Windows-centric environments. Azure CLI is preferred in Linux/bash workflows and CI/CD pipelines. Bicep is the modern standard for maintainable IaC at scale.
 
 ---
 
 ## Overall Result
 
-This lab demonstrated deploying the same resource five ways using progressively more code-driven approaches:
+This lab demonstrated deploying the same resource type five ways using progressively more code-driven approaches:
 
 ```
-Portal UI → Export Template (disk1)
+Portal UI → Create disk1 → Export ARM Template
         ↓
-Simplify Template + Custom Deployment Portal (disk2)
+Simplify Template → Custom Deployment Portal → disk2
         ↓
-Same Template → Azure PowerShell (disk3)
+Edit Template → Azure PowerShell (Cloud Shell) → disk3
         ↓
-Same Template → Azure CLI (disk4)
+Edit Template → Azure CLI (Cloud Shell) → disk4
         ↓
-Bicep Template → Azure CLI (az104-disk5)
+Bicep Template → Azure CLI (Cloud Shell) → az104-disk5
         ↓
-All 5 Disks Validated via CLI and PowerShell
+All 5 Disks Validated After Each Deployment
 ```
 
 **All objectives completed. Five disks deployed using five different methods.**
