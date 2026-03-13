@@ -15,13 +15,20 @@ Each lab folder contains a dedicated README documenting the objective, steps tak
 
 ---
 
+## Virtual Machines & Scale Sets
 
+| Lab | What I Did | Concepts Covered | Technologies |
+|---|---|---|---|
+| **[AZ-104 — Manage Virtual Machines](./az104-lab08-manage-virtual-machines)** | Deployed two Windows Server VMs, resized a VM post-deployment, created and managed a data disk (attach, detach, upgrade SKU, reattach), deleted VMs via PowerShell, deployed a VMSS across 3 availability zones with a load balancer, and configured CPU-based autoscale rules | VM lifecycle management, Post-deployment resizing, Managed disk SKU upgrades, Delete options for orphan prevention, VMSS orchestration, Metric-driven autoscaling, Availability zones | Azure Portal, Azure PowerShell, Azure Cloud Shell, Azure Monitor, Load Balancer |
+| **[VMSS from Custom Image](./vmss-custom-image-lab)** | Deployed a base VM, created a test file, generalized the VM with Sysprep, captured it as a custom managed image, deployed a VMSS from that image across availability zones, opened RDP via NSG inbound rule, and validated image fidelity by confirming the test file persisted on a scale set instance | VM generalization, Sysprep OOBE, Custom image capture, VMSS from private image, Flexible orchestration mode, NSG inbound rules, Load balancer NAT rules, Image fidelity validation | Azure Portal, Azure PowerShell, Windows Sysprep, NSG, Load Balancer, RDP |
+
+---
 
 ## Certifications in Progress
 
 | Certification | Status |
 |---|---|
-| AZ-900 — Microsoft Azure Fundamentals | In Progress |
+| AZ-900 — Microsoft Azure Fundamentals | Complete |
 | AZ-104 — Microsoft Azure Administrator | In Progress |
 
 ---
