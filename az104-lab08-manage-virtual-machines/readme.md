@@ -102,11 +102,11 @@ A managed data disk named `vm1-disk1` was created and attached to `az104-vm-1`. 
 
 **Before upgrade — disk attached as Standard HDD:**
 
-<img src="./docs/Screenshot_2026-03-12_at_10_53_13_PM.png" alt="vm1-disk1 attached to az104-vm-1 as Standard HDD LRS" width="600"/>
+<img src="./docs/02-Disk-Creation.png" alt="vm1-disk1 attached to az104-vm-1 as Standard HDD LRS" width="600"/>
 
 **After upgrade — disk reattached as Standard SSD LRS:**
 
-<img src="./docs/Screenshot_2026-03-12_at_11_04_48_PM.png" alt="vm1-disk1 reattached to az104-vm-1 as Standard SSD LRS after upgrade" width="600"/>
+<img src="./docs/03-New-Disk.png" alt="vm1-disk1 reattached to az104-vm-1 as Standard SSD LRS after upgrade" width="600"/>
 
 **Key point:** Managed disk SKUs can only be changed while the disk is **detached** from a VM. This is a non-destructive operation — data is preserved through the upgrade — and the disk can be immediately reattached afterward.
 
