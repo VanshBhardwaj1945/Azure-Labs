@@ -2,7 +2,7 @@
 
 > **Azure Administrator Lab Documentation**  
 > Creating a generalized VM image using Sysprep, deploying a Virtual Machine Scale Set from that custom image, configuring RDP access via NSG inbound rules, and validating image fidelity by connecting to a scale set instance.  
-> ***Link to Lab Instructions:*** [Setting up your first Virtual Machine Scale Set (PDF)](./docs/ONLINE_LAB__Setting_up_your_first_Virtual_Machine_Scale_Set_v2.pdf)
+
 
 ---
 
@@ -90,7 +90,7 @@ A base Windows Server VM named `myvm` was deployed into `myvm_group` via the Azu
 
 Before capturing the image, a test file (`Test.txt`) was created on the VM desktop to serve as a validation marker — if the file appears on scale set instances after deployment, the image was captured correctly.
 
-<img src="./docs/01-_Created-Test-TXT.png" alt="Test.txt created on the base VM desktop before Sysprep" width="600"/>
+<img src="./docs/01- Created-Test-TXT.png" alt="Test.txt created on the base VM desktop before Sysprep" width="600"/>
 
 The VM was then generalized using the Windows System Preparation Tool (Sysprep). Generalizing strips the machine-specific identity from the OS, making it suitable for use as a reusable image template.
 
