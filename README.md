@@ -23,6 +23,14 @@ Each lab folder contains a dedicated README documenting the objective, steps tak
 
 ---
 
+## Networking
+
+| Lab | What I Did | Concepts Covered | Technologies |
+|---|---|---|---|
+| **[AZ-104 — Implement Intersite Connectivity](./az104-lab05-intersite-connectivity)** | Deployed two VMs in separate VNets with non-overlapping address spaces, used Network Watcher to confirm no connectivity before peering, configured bidirectional VNet peering, validated cross-VNet communication via PowerShell `Test-NetConnection`, then created a perimeter subnet, route table, and custom UDR to steer traffic through a future NVA | VNet peering, Network segmentation, Network Watcher diagnostics, User-defined routes, Next hop types, Traffic steering via virtual appliance, Hub-and-spoke routing pattern | Azure Portal, Azure PowerShell, Azure Network Watcher, VNet Peering, Route Tables, NSG |
+
+---
+
 ## Virtual Machines & Scale Sets
 
 | Lab | What I Did | Concepts Covered | Technologies |
